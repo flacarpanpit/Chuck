@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Chuck Norris API</title>
+<style type="text/css">@import url('https://fonts.googleapis.com/css2?family=Concert+One&display=swap');
+
+*{ margin: 0;
+   box-sizing: border-box;}
+
+body{background:#F0F0C9;}
+
+.main-title
+{   font-family:'Concert One',serif;
+    font-weight:400;
+    font-size:50px;
+    line-height:60px;
+    color:#D8572A;
+    stroke:#000;    
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    text-shadow: 0 0 10px rgba(1,1,1,1);
+    margin-bottom:130px;
+    margin-top:30px;}
+
+.main-container
+{   display:flex;
+    align-items:center;
+    flex-direction:column;
+    justify-content:center; }
+
+#chucknorris-gif
+{   width:105px;
+    height:125px;}
+
+.joke
+{   font-family: 'Concert One', serif;
+    font-size:20px;
+    font-weight:800;
+    line-height:23px;
+    text-align:center;
+    color:#000;}
+
+.joke-container
+{   width:365px;
+    height:115px;
+    border-radius:20px;
+    display:flex;
+    justify-content:center;
+    flex-direction:column;
+    align-items:center;
+    background:#E1E1E1;
+    margin-bottom:180px;}
+
+.category-container
+{   display:flex;
+    flex-direction:column;
+    align-items:center;}
+
+.category-selector{
+    width:365px;
+    height:30px;
+    margin-bottom:15px;
+    border-radius:10px;
+    filter:drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));;
+    border:white;
+    margin-bottom:155px;
+}
+
+.buttons{
+    display:flex;
+    align-items:center;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.load-joke
+{   width:365px;
+    height:50px;
+    border:none;
+    background:#780116;
+    border-radius:10px;
+    font-family:'Concert One', serif;
+    font-size:15px;
+    font-weight:400;
+    line-height:20px;
+    text-align:center;
+    color:#fff;
+    margin-bottom:20px;
+}
+
+.copy
+{   width:185px;
+    height:33px;
+    background:rgba(216, 87, 42, 0.8);
+    border-radius:10px;
+    border:none;
+    font-family:'Concert One', serif;
+    font-size:15px;
+    font-weight:400;
+    text-align:center;
+    line-height:20px;
+    color: #fff;}
+</style>
+</head>
+<body>
+	<div class="main-container">
+		<div class="main-title">
+		<h1 class="title">Joke Chuck Norris</h1>
+		<img class="title-img" src="uzi.png">
+		</div>
+		<div class="joke-container">
+		<div><span class="joke"></span></div>
+		</div>
+		<div class="category-container">
+		<img id="chucknorris-gif" src="Chuck.gif"> 
+		<select name="joke-category" class="category-selector">
+			<option value=""></option> 
+			<option value="animal">Animali</option>
+			<option value="career">Carriera</option>
+			<option value="celebrity">Celebrità</option>
+			<option value="dev">Dev</option>
+			<option value="explicit">Esplicito</option>
+			<option value="fashion">Fashion</option>
+			<option value="food">Cibo</option>
+			<option value="history">Storia</option>
+			<option value="money">Denaro</option>
+			<option value="movie">Film</option>
+			<option value="music">Musica</option>
+			<option value="political">Politica</option>
+			<option value="religion">Religione</option>
+			<option value="science">Scienza</option>    
+			<option value="sport">Sport</option>
+			<option value="travel">Viaggi</option>
+			</select>
+		</div>
+		<div class="buttons">
+			<button class="load-joke"><span>Carica battuta</span></button>
+			<button class="copy"><span id="text">copia</span><img src="Icon.png"></button>
+		</div>
+	</div>
+<script type="text/javascript">
+let btn = document.querySelector(".load-joke")
+let joke_container = document.querySelector(".joke-container")
+let joke = document.querySelector(".joke")
+btn?.addEventListener("click", async (e)=>{
+    e.preventDefault()
+    let genre = document.querySelector("select").value
+    let url = `https://api.chucknorris.io/jokes/random?category=${genre.toLowerCase()}`
+
+    await fetch(url)
+        .then(data => {            
+            return data.json()
+        })
+        .then(jokegen =>{
+            if(jokegen.value == undefined){
+                joke_container.innerHTML = "Select a category"
+                return
+            }            
+
+            joke_container.innerHTML = jokegen.value     
+        })
+        .catch(err => {
+            console.error(err)
+            joke_container.innerHTML = "Error"
+        })
+})
+
+
+document.querySelector(".copy").addEventListener("click", async ()=>{
+    await navigator.clipboard.writeText(joke_container.innerText);
+})
+</script>
+</body>
+</html>
